@@ -1,0 +1,24 @@
+:root {
+  --black-color: #000000;
+  --white-color: #ffffff;
+  --orange-color: #ff9933;
+  --green-color: #34ad54;
+  --blue-color: #31708f;
+  --lightgray-color: #dddddd;
+  --darkgray-color: #333333;
+  --btn-success-color: #5cb85c;
+  --btn-danger-color: #d9534f;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+  background: white;
+  min-height: 100vh;
+  padding: 20px;
+}
