@@ -1,0 +1,109 @@
+.todo {
+  &__main {
+    margin: 0px 30px;
+    border: 1px solid var(--green-color);
+    background-color: var(--white-color);
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 800px;
+  }
+
+  &__title {
+    color: var(--blue-color);
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 2.2em;
+    font-weight: bold;
+  }
+
+  &__list {
+    list-style: none;
+    margin-bottom: 25px;
+  }
+
+  &__item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 12px;
+    background: var(--lightgray-color);
+    border-radius: 8px;
+    border-left: 4px solid var(--orange-color);
+  }
+
+  &__description {
+    font-size: 1.1em;
+    color: var(--darkgray-color);
+    flex-grow: 1;
+    margin-right: 15px;
+  }
+
+  &__new-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 20px;
+  }
+
+  &__form-wrapper {
+    display: flex;
+    gap: 6px;
+  }
+
+  &__input {
+    flex-grow: 1;
+    padding: 12px;
+    border: 2px solid var(--green-color);
+    border-radius: 8px;
+    font-size: 1em;
+    outline: none;
+
+    &:focus {
+      border-color: var(--orange-color);
+      box-shadow: 0 0 0 3px rgba(52, 173, 84, 0.1);
+    }
+  }
+
+  &__button {
+    &--add {
+      background: var(--btn-success-color);
+      color: var(--white-color);
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+
+      &:hover {
+        transform: scale(1.05);
+      }
+
+      &:active {
+        transform: scale(0.95);
+      }
+    }
+
+    &--delete {
+      background: var(--btn-danger-color);
+      color: var(--white-color);
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+
+      &:hover {
+        transform: scale(1.05);
+      }
+
+      &:active {
+        transform: scale(0.95);
+      }
+    }
+  }
+}
