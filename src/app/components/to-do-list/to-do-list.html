@@ -1,24 +1,31 @@
 <div class="todo__main">
   <h1 class="todo__title">Список задач</h1>
   <ul class="todo__list">
-    <li class="todo__item">
-      <span class="todo__description">Покормить кота</span
-      ><button class="todo__button--delete">Delete</button>
-    </li>
-    <li class="todo__item">
-      <span class="todo__description">Создать шаблон компонента</span
-      ><button class="todo__button--delete">Delete</button>
-    </li>
-    <li class="todo__item">
-      <span class="todo__description">Придумать задачи для шаблона компонента</span
-      ><button class="todo__button--delete">Delete</button>
-    </li>
+    @for (task of tasks; track task.id) {
+      <app-to-do-list-item
+        [id]="task.id"
+        [text]="task.text"
+        (deleteTaskEvent)="deleteTask($event)"
+      ></app-to-do-list-item>
+    }
   </ul>
   <form class="todo__new-form">
-    <label for="new-task" class="todo__label">Введите описание задачи:</label>
     <div class="todo__form-wrapper">
-      <input id="new-task" type="text" class="todo__input" placeholder="Приготовить обед" />
-      <button type="submit" class="todo__button--add">Add</button>
+      <mat-form-field appearance="fill">
+        <mat-label>Введите описание задачи:</mat-label>
+        <input matInput [formControl]="taskFormControl" placeholder="Приготовить обед" />
+        @if (taskFormControl.hasError('required')) {
+          <mat-error>Описание задачи <strong>обязательно </strong>для заполнения!</mat-error>
+        }
+      </mat-form-field>
+      <button
+        type="submit"
+        class="button button--add"
+        (click)="onAddTask(taskFormControl.value)"
+        [disabled]="taskFormControl.invalid"
+      >
+        Add
+      </button>
     </div>
   </form>
 </div>
