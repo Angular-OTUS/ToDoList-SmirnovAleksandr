@@ -51,36 +51,3 @@
     }
   }
 }
-
-.button {
-  height: 32px;
-  width: 100px;
-  color: var(--white-color);
-  padding: 8px 16px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: all 0.3s ease;
-
-  &:hover {
-    transform: scale(1.05);
-  }
-
-  &:active {
-    transform: scale(0.95);
-  }
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-
-  &--add {
-    background: var(--btn-success-color);
-  }
-
-  &--delete {
-    background: var(--btn-danger-color);
-  }
-}
