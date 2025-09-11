@@ -1,4 +1,8 @@
 <li class="todo-list__item">
   <span class="todo-list__description">{{ text }}</span>
-  <button class="button button--delete" (click)="deleteCurrentTask(id)">Delete</button>
+  <app-button-component
+    [title]="'Delete'"
+    [isDelete]="true"
+    (click)="deleteCurrentTask(id)"
+  ></app-button-component>
 </li>

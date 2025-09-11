@@ -1,0 +1,8 @@
+<button
+  class="button"
+  [type]="type"
+  [ngClass]="{ 'button--add': isAdd, 'button--delete': isDelete }"
+  [disabled]="isDisabled"
+>
+  {{ title }}
+</button>

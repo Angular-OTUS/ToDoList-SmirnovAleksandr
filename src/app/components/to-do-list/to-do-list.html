@@ -1,14 +1,18 @@
 <div class="todo__main">
   <h1 class="todo__title">Список задач</h1>
-  <ul class="todo__list">
-    @for (task of tasks; track task.id) {
-      <app-to-do-list-item
-        [id]="task.id"
-        [text]="task.text"
-        (deleteTaskEvent)="deleteTask($event)"
-      ></app-to-do-list-item>
-    }
-  </ul>
+  @if (isLoading) {
+    <app-loader></app-loader>
+  } @else {
+    <ul class="todo__list">
+      @for (task of tasks; track task.id) {
+        <app-to-do-list-item
+          [id]="task.id"
+          [text]="task.text"
+          (deleteTaskEvent)="deleteTask($event)"
+        ></app-to-do-list-item>
+      }
+    </ul>
+  }
   <form class="todo__new-form">
     <div class="todo__form-wrapper">
       <mat-form-field appearance="fill">
@@ -18,14 +22,13 @@
           <mat-error>Описание задачи <strong>обязательно </strong>для заполнения!</mat-error>
         }
       </mat-form-field>
-      <button
-        type="submit"
-        class="button button--add"
+      <app-button-component
+        [type]="'submit'"
+        [title]="'Add'"
+        [isAdd]="true"
         (click)="onAddTask(taskFormControl.value)"
-        [disabled]="taskFormControl.invalid"
-      >
-        Add
-      </button>
+        [isDisabled]="taskFormControl.invalid"
+      ></app-button-component>
     </div>
   </form>
 </div>
