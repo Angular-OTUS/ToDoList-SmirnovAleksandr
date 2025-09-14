@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
+import { TypeButton } from '../../../types/common.types';
 
 @Component({
   selector: 'app-button-component',
@@ -12,5 +13,5 @@ export class ButtonComponent {
   @Input() isDelete = false;
   @Input() isAdd = false;
   @Input() isDisabled = false;
-  @Input() type: 'submit' | 'button' = 'button';
+  @Input() type: TypeButton = 'button';
 }

@@ -41,6 +41,7 @@ body {
   --green-color: #34ad54;
   --blue-color: #31708f;
   --lightgray-color: #dddddd;
+  --lightorange-color: #ffbb77;
   --darkgray-color: #333333;
   --btn-success-color: #5cb85c;
   --btn-danger-color: #d9534f;
@@ -58,4 +59,17 @@ body {
   background: white;
   min-height: 100vh;
   padding: 20px;
+}
+
+.tooltip {
+  background-color: #333;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.9;
+  max-width: 300px;
+  word-wrap: break-word;
 }
