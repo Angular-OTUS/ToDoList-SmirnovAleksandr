@@ -9,6 +9,11 @@
     border-radius: 8px;
     border-left: 4px solid var(--orange-color);
     text-align: left;
+    cursor: pointer;
+
+    &--selected {
+      background: var(--lightorange-color);
+    }
   }
 
   &__description {

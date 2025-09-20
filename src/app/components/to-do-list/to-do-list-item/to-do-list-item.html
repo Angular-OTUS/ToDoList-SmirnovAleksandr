@@ -1,8 +1,13 @@
-<li class="todo-list__item">
-  <span class="todo-list__description">{{ text }}</span>
+<li class="todo-list__item" [ngClass]="{ 'todo-list__item--selected': isSelected() }">
+  <span
+    class="todo-list__description"
+    appShowTooltip="Нажмите, чтобы просмотреть описание задачи"
+    >{{ text }}</span
+  >
   <app-button-component
     [title]="'Delete'"
     [isDelete]="true"
     (click)="deleteCurrentTask(id)"
+    appShowTooltip="Удалить задачу"
   ></app-button-component>
 </li>
