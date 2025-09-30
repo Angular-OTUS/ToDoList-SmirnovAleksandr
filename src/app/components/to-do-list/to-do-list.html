@@ -10,8 +10,11 @@
             [id]="task.id"
             [text]="task.text"
             [selectedItemId]="selectedItemId"
+            [isEdited]="this.editedItemId === task.id"
             (deleteTaskEvent)="deleteTask($event)"
+            (saveTextTaskEvent)="saveTextTask($event, task.id)"
             (click)="onListItemClick(task.id)"
+            (dblclick)="onListItemDblClick(task.id)"
           ></app-to-do-list-item>
         }
       </ul>

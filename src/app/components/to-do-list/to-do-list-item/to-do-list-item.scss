@@ -22,4 +22,13 @@
     flex-grow: 1;
     margin-right: 15px;
   }
+
+  &__new-form {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    /* margin-top: 20px; */
+    align-items: flex-start;
+    width: 100%;
+  }
 }
