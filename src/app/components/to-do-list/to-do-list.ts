@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -35,6 +35,8 @@ export class ToDoList implements OnInit {
   public toastService = inject(ToastService);
   public tasks: Task[] = [];
 
+  private cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
+
   ngOnInit() {
     this.loadTasks();
   }
@@ -50,6 +52,7 @@ export class ToDoList implements OnInit {
     this.dataService.deleteTask(id);
     this.selectedItemId = null;
     this.loadTasks();
+    this.cdr.detectChanges();
     this.toastService.showToast(`❌ Задача удалена!`);
   }
 
@@ -81,6 +84,7 @@ export class ToDoList implements OnInit {
   }
 
   getTaskDescription(): string | null {
+    console.log(this.selectedItemId);
     if (this.selectedItemId === null) {
       return '';
     }
