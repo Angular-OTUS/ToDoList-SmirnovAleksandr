@@ -29,6 +29,16 @@ export class ShowTooltip {
     this.hideTooltip();
   }
 
+  @HostListener('click')
+  onClick(): void {
+    this.hideTooltip();
+  }
+
+  @HostListener('dblclick')
+  onDblClick(): void {
+    this.hideTooltip();
+  }
+
   private showTooltip(): void {
     if (this.tooltipElement) {
       return;

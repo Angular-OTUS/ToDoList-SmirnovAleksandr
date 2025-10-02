@@ -12,6 +12,7 @@ export class ButtonComponent {
   @Input() title?: string = 'button';
   @Input() isDelete = false;
   @Input() isAdd = false;
+  @Input() isEdit = false;
   @Input() isDisabled = false;
   @Input() type: TypeButton = 'button';
 }

@@ -30,4 +30,8 @@
   &--delete {
     background: var(--btn-danger-color);
   }
+
+  &--edit {
+    background: var(--btn-info-color);
+  }
 }
