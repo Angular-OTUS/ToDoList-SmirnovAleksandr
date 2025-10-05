@@ -1,0 +1,27 @@
+<h3 class="todo__subtitle">Новая задача</h3>
+<form class="todo__new-form">
+  <mat-form-field appearance="fill" [style]="'width:100%'">
+    <mat-label>Название задачи:</mat-label>
+    <input matInput [formControl]="taskFormControl" placeholder="Например: Приготовить обед" />
+    @if (taskFormControl.hasError('required')) {
+      <mat-error>Название задачи <strong>обязательно </strong>для заполнения!</mat-error>
+    }
+  </mat-form-field>
+  <mat-form-field [style]="'width:100%'">
+    <mat-label>Описание задачи</mat-label>
+    <textarea
+      matInput
+      [formControl]="descriptionFormControl"
+      placeholder="Введите описание задачи (необязательно)"
+    ></textarea>
+  </mat-form-field>
+  <app-button-component
+    [type]="'submit'"
+    [isAdd]="true"
+    (click)="onAddTask(taskFormControl.value, descriptionFormControl.value)"
+    [isDisabled]="taskFormControl.invalid"
+    appShowTooltip="Добавить задачу"
+  >
+    Add
+  </app-button-component>
+</form>

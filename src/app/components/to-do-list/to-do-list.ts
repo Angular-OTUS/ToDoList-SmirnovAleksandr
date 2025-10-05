@@ -1,14 +1,14 @@
-import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
-import { FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ToDoListItem } from './to-do-list-item/to-do-list-item';
 import { Loader } from '../common-ui/loader/loader';
-import { ButtonComponent } from '../common-ui/button-component/button-component';
-import { ShowTooltip } from '../../directives/show-tooltip';
 import { DataService } from '../../services/data.service';
-import { Task } from '../../types/common.types';
+import { Task, TypeStatus, TypeStatusFilter } from '../../types/common.types';
 import { ToastService } from '../../services/toast.service';
+import { MatSelectModule } from '@angular/material/select';
+import { ToDoListCreate } from './to-do-list-create/to-do-list-create';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-to-do-list',
@@ -16,63 +16,125 @@ import { ToastService } from '../../services/toast.service';
     ToDoListItem,
     MatFormFieldModule,
     MatInputModule,
-    FormsModule,
-    ReactiveFormsModule,
+    MatSelectModule,
     Loader,
-    ButtonComponent,
-    ShowTooltip,
+    ToDoListCreate,
   ],
   templateUrl: './to-do-list.html',
   styleUrl: './to-do-list.scss',
 })
-export class ToDoList implements OnInit {
+export class ToDoList implements OnInit, OnDestroy {
   public isLoading = true;
-  public taskFormControl = new FormControl('', [Validators.required]);
-  public descriptionFormControl = new FormControl('');
   public selectedItemId: number | null = null;
   public editedItemId: number | null = null;
   public dataService = inject(DataService);
   public toastService = inject(ToastService);
   public tasks: Task[] = [];
-
+  public filteredTasks: Task[] = [];
+  public selectedFilter: TypeStatusFilter = 'All';
   private cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
+  private destroy$ = new Subject<void>(); // корректно ли использовать один destroy для нескольких подписок?
 
   ngOnInit() {
     this.loadTasks();
   }
 
   loadTasks(): void {
-    setTimeout(() => {
-      this.isLoading = false;
-    }, 500);
-    this.tasks = this.dataService.getTasks();
+    this.isLoading = true;
+    this.dataService
+      .getTasks()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (tasks) => {
+          this.tasks = tasks;
+          this.filterTasks();
+          this.isLoading = false;
+        },
+        error: (error: Error) => {
+          this.toastService.showToast(`⚠️ Ошибка! ${error.message}`);
+          this.isLoading = false;
+        },
+      });
+  }
+
+  filterTasks(): void {
+    if (this.selectedFilter === 'All') {
+      this.filteredTasks = this.tasks;
+    } else {
+      this.filteredTasks = this.tasks.filter((task) => task.status === this.selectedFilter);
+    }
+  }
+
+  addTask(taskArr: [string, string | null]) {
+    const taskText = taskArr[0];
+    const description = taskArr[1];
+    this.dataService
+      .addTask({ text: taskText, description, status: 'InProgress' })
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.loadTasks();
+          this.toastService.showToast(`✅ Добавлена задача: ${taskText}`);
+        },
+        error: (error: Error) => {
+          this.toastService.showToast(`⚠️ Ошибка! ${error.message}`);
+        },
+      });
   }
 
   deleteTask(id: number): void {
-    this.dataService.deleteTask(id);
-    this.selectedItemId = null;
-    this.loadTasks();
-    this.cdr.detectChanges();
-    this.toastService.showToast(`❌ Задача удалена!`);
+    this.dataService
+      .deleteTask(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.selectedItemId = null;
+          this.loadTasks();
+          this.cdr.detectChanges();
+          this.toastService.showToast(`❌ Задача удалена!`);
+        },
+        error: (error: Error) => {
+          this.toastService.showToast(`⚠️ Ошибка! ${error.message}`);
+        },
+      });
   }
 
   saveTextTask(text: string, id: number): void {
-    this.dataService.editTask(id, text);
-    this.toastService.showToast(`✏️ Задача отредактирована: ${text}`);
+    this.dataService
+      .updateTask(id, { text })
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.editedItemId = null;
+          this.toastService.showToast(`✏️ Задача отредактирована: ${text}`);
+        },
+        error: (error: Error) => {
+          this.toastService.showToast(`⚠️ Ошибка! ${error.message}`);
+        },
+      });
   }
 
-  onAddTask(taskText: string | null, description: string | null) {
-    if (taskText) {
-      const lastId = this.tasks.length > 0 ? this.tasks[this.tasks.length - 1].id : 0;
-      this.dataService.addTask({ id: lastId + 1, text: taskText, description });
-      this.toastService.showToast(`✅ Добавлена задача: ${taskText}`);
-      this.taskFormControl.setValue('');
-      this.descriptionFormControl.setValue('');
-    } else {
-      if (this.taskFormControl.hasError('required')) {
-        this.taskFormControl.markAsTouched();
-      }
-    }
+  changeTaskStatus(status: TypeStatus, id: number): void {
+    this.dataService
+      .updateTask(id, { status })
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          if (status === 'Completed') {
+            this.toastService.showToast(
+              `✅ Задача выполнена: ${this.tasks.find((task) => task.id === id)?.text}`,
+            );
+          } else {
+            this.toastService.showToast(
+              `⏳ Задача в процессе: ${this.tasks.find((task) => task.id === id)?.text}`,
+            );
+          }
+          this.filterTasks();
+        },
+        error: (error: Error) => {
+          this.toastService.showToast(`⚠️ Ошибка! ${error.message}`);
+        },
+      });
   }
 
   onListItemClick(taskId: number) {
@@ -84,17 +146,19 @@ export class ToDoList implements OnInit {
   }
 
   getTaskDescription(): string | null {
-    console.log(this.selectedItemId);
     if (this.selectedItemId === null) {
       return '';
     }
     const task = this.tasks.find((task) => task.id === this.selectedItemId);
     if (!task) {
-      // после удаления элемента при ховере на задачу срабатывает эта ветка, несмотря на обнуление this.selectedItemId
-      // и пытается найти удаленный id. Почему?
       console.log(`task not found: ${this.selectedItemId}`);
       return '';
     }
     return task.description !== undefined ? task.description : '';
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

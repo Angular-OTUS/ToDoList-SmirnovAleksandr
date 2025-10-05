@@ -22,13 +22,15 @@ import { MatInputModule } from '@angular/material/input';
 })
 export class ToDoListItem implements OnInit {
   @Input() text?: string;
+  @Input() status?: string;
   @Input() id!: number;
   @Input() selectedItemId?: number | null;
-  @Input() isEdited?: boolean = false;
+  @Input() isEdited = false;
   @Output() deleteTaskEvent = new EventEmitter();
   @Output() saveTextTaskEvent = new EventEmitter();
+  @Output() changeTaskStatusEvent = new EventEmitter();
 
-  public taskFormControl = new FormControl(this.text ? this.text : '', [Validators.required]);
+  public taskFormControl!: FormControl;
 
   ngOnInit() {
     if (!this.text) {
@@ -57,5 +59,10 @@ export class ToDoListItem implements OnInit {
     } else {
       return false;
     }
+  }
+
+  toggleStatus(): void {
+    this.status = this.status === 'Completed' ? 'InProgress' : 'Completed';
+    this.changeTaskStatusEvent.emit(this.status);
   }
 }
