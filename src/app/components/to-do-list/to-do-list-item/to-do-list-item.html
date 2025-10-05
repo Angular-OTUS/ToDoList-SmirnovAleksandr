@@ -1,4 +1,10 @@
-<li class="todo-list__item" [ngClass]="{ 'todo-list__item--selected': isSelected() }">
+<li
+  class="todo-list__item"
+  [ngClass]="{
+    'todo-list__item--selected': isSelected(),
+    'todo-list__item--completed': status === 'Completed',
+  }"
+>
   @if (isEdited) {
     <form class="todo-list__new-form">
       <mat-form-field appearance="fill" [style]="'width:100%'">
@@ -10,24 +16,25 @@
       </mat-form-field>
       <app-button-component
         [type]="'submit'"
-        [title]="'Save'"
         [isEdit]="true"
         [isDisabled]="taskFormControl.invalid"
         (click)="saveCurrentTask(taskFormControl.value)"
         appShowTooltip="Сохранить описание задачи"
-      ></app-button-component>
+        >Save</app-button-component
+      >
     </form>
   } @else {
+    <input type="checkbox" [checked]="status === 'Completed'" (change)="toggleStatus()" />
     <span
       class="todo-list__description"
       appShowTooltip="Нажмите, чтобы просмотреть описание задачи. Нажмите дважды для редактирования задачи"
       >{{ text }}</span
     >
     <app-button-component
-      [title]="'Delete'"
       [isDelete]="true"
       (click)="deleteCurrentTask(id)"
       appShowTooltip="Удалить задачу"
-    ></app-button-component>
+      >Delete</app-button-component
+    >
   }
 </li>

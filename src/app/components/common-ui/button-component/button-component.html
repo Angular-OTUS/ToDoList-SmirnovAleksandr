@@ -4,5 +4,5 @@
   [ngClass]="{ 'button--add': isAdd, 'button--delete': isDelete, 'button--edit': isEdit }"
   [disabled]="isDisabled"
 >
-  {{ title }}
+  <ng-content></ng-content>
 </button>

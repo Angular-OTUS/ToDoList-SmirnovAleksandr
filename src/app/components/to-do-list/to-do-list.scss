@@ -25,6 +25,13 @@
     font-weight: bold;
   }
 
+  &__filter {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
   &__subtitle {
     color: var(--blue-color);
     margin-bottom: 15px;
@@ -74,5 +81,19 @@
 
   &__description {
     padding: 8px;
+  }
+
+  &__empty-list {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 12px;
+    background: var(--lightgray-color);
+    border-radius: 12px;
+    border: 2px solid var(--blue-color);
+    border-left: 12px solid var(--blue-color);
+    text-align: left;
   }
 }

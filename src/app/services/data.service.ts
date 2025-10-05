@@ -1,52 +1,30 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Task } from '../types/common.types';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DataService {
-  public tasks: Task[] = [
-    { id: 1, text: 'Покормить кота', description: 'Покормить и не забыть налить ему воды' },
-    {
-      id: 2,
-      text: 'Создать шаблон компонента',
-      description: 'Создать шаблон для компонентов to-do-list-item и to-do-list',
-    },
-    {
-      id: 3,
-      text: 'Придумать задачи для шаблона компонента',
-      description: 'Написать моковые задачи для приложения списка задач',
-    },
-  ];
+  http = inject(HttpClient);
+  private apiUrl = 'http://localhost:3001/tasks';
 
-  getTasks(): Task[] {
-    if (this.tasks) {
-      return this.tasks;
-    } else {
-      return [];
-    }
+  getTasks(): Observable<Task[]> {
+    return this.http.get<Task[]>(this.apiUrl);
   }
 
-  addTask(task: Task): void {
-    if (this.tasks) {
-      this.tasks.push(task);
-    }
+  addTask(task: Omit<Task, 'id'>): Observable<Task> {
+    return this.http.post<Task>(this.apiUrl, task);
   }
 
-  deleteTask(id: number): void {
-    if (this.tasks) {
-      this.tasks = this.tasks.filter((task) => task.id !== id);
-    }
+  deleteTask(id: number): Observable<void> {
+    const url = `${this.apiUrl}/${id}`;
+    return this.http.delete<void>(url);
   }
 
-  editTask(id: number, text: string): void {
-    if (this.tasks) {
-      this.tasks = this.tasks.map((task) => {
-        if (task.id === id) {
-          task.text = text;
-        }
-        return task;
-      });
-    }
+  updateTask(id: number, task: Partial<Task>): Observable<Task> {
+    const url = `${this.apiUrl}/${id}`;
+    return this.http.patch<Task>(url, task);
   }
 }
