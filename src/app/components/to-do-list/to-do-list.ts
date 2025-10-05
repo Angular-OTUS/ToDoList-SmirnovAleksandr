@@ -129,7 +129,7 @@ export class ToDoList implements OnInit, OnDestroy {
               `⏳ Задача в процессе: ${this.tasks.find((task) => task.id === id)?.text}`,
             );
           }
-          this.filterTasks();
+          this.loadTasks();
         },
         error: (error: Error) => {
           this.toastService.showToast(`⚠️ Ошибка! ${error.message}`);
