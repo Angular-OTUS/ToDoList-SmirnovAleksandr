@@ -20,8 +20,8 @@
             [id]="task.id"
             [text]="task.text"
             [status]="task.status"
-            [selectedItemId]="selectedItemId"
             [isEdited]="this.editedItemId === task.id"
+            [isSelected]="this.selectedItemId === task.id"
             (deleteTaskEvent)="deleteTask($event)"
             (changeTaskStatusEvent)="changeTaskStatus($event, task.id)"
             (saveTextTaskEvent)="saveTextTask($event, task.id)"
@@ -45,10 +45,8 @@
   </div>
   @if (selectedItemId) {
     <div class="todo__side-content">
-      <div class="todo__description-view">
-        <h3 class="todo__subtitle">Описание задачи</h3>
-        <div class="todo__description">{{ getTaskDescription() }}</div>
-      </div>
+      <router-outlet></router-outlet>
+      <!-- <app-to-do-list-item-view/> -->
     </div>
   }
 </main>

@@ -28,17 +28,19 @@ export class ToDoListCreate {
     if (taskText) {
       const newTask: [string, string | null] = [taskText, description];
       this.addTaskEvent.emit(newTask);
-      this.taskFormControl.setValue('', { emitEvent: false });
-      this.taskFormControl.markAsPristine();
-      this.taskFormControl.markAsUntouched();
+      this.resetFormSettings(this.taskFormControl);
+      this.resetFormSettings(this.descriptionFormControl);
       this.cdr.detectChanges();
-      this.descriptionFormControl.setValue('', { emitEvent: false });
-      this.descriptionFormControl.markAsPristine();
-      this.descriptionFormControl.markAsUntouched();
     } else {
       if (this.taskFormControl.hasError('required')) {
         this.taskFormControl.markAsTouched();
       }
     }
+  }
+
+  resetFormSettings(formControl: FormControl) {
+    formControl.setValue('', { emitEvent: false });
+    formControl.markAsPristine();
+    formControl.markAsUntouched();
   }
 }

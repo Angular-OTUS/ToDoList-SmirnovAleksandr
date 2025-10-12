@@ -1,13 +1,12 @@
 import { Component, inject, OnDestroy, signal } from '@angular/core';
-//import { RouterOutlet } from '@angular/router';
-import { ToDoList } from './components/to-do-list/to-do-list';
+import { RouterOutlet } from '@angular/router';
 import { ToastComponent } from './components/common-ui/toast-component/toast-component';
 import { ToastService } from './services/toast.service';
 import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',
-  imports: [ToDoList, ToastComponent],
+  imports: [ToastComponent, RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
