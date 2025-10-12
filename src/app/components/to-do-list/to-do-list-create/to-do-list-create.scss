@@ -1,0 +1,16 @@
+.todo {
+  &__subtitle {
+    color: var(--blue-color);
+    margin-bottom: 15px;
+    font-size: 1.6em;
+    font-weight: bold;
+  }
+
+  &__new-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 20px;
+    align-items: flex-start;
+  }
+}

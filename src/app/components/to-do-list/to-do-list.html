@@ -4,52 +4,43 @@
     @if (isLoading) {
       <app-loader></app-loader>
     } @else {
+      <div class="todo__filter">
+        <mat-form-field appearance="fill" [style]="'width:100%'">
+          <mat-label>Выберите фильтр</mat-label>
+          <mat-select [(value)]="selectedFilter" (selectionChange)="filterTasks()">
+            <mat-option value="All">All</mat-option>
+            <mat-option value="InProgress">InProgress</mat-option>
+            <mat-option value="Completed">Completed</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
       <ul class="todo__list">
-        @for (task of tasks; track task.id) {
+        @for (task of filteredTasks; track task.id) {
           <app-to-do-list-item
             [id]="task.id"
             [text]="task.text"
+            [status]="task.status"
             [selectedItemId]="selectedItemId"
             [isEdited]="this.editedItemId === task.id"
             (deleteTaskEvent)="deleteTask($event)"
+            (changeTaskStatusEvent)="changeTaskStatus($event, task.id)"
             (saveTextTaskEvent)="saveTextTask($event, task.id)"
             (click)="onListItemClick(task.id)"
             (dblclick)="onListItemDblClick(task.id)"
           ></app-to-do-list-item>
+        } @empty {
+          <p class="todo__empty-list">
+            @if (selectedFilter === 'All') {
+              Задач пока нет. Создайте первую задачу в форме ниже.
+            } @else {
+              Задач по данному фильтру нет.
+            }
+          </p>
         }
       </ul>
     }
     <section class="todo__new-task">
-      <h3 class="todo__subtitle">Новая задача</h3>
-      <form class="todo__new-form">
-        <mat-form-field appearance="fill" [style]="'width:100%'">
-          <mat-label>Название задачи:</mat-label>
-          <input
-            matInput
-            [formControl]="taskFormControl"
-            placeholder="Например: Приготовить обед"
-          />
-          @if (taskFormControl.hasError('required')) {
-            <mat-error>Название задачи <strong>обязательно </strong>для заполнения!</mat-error>
-          }
-        </mat-form-field>
-        <mat-form-field [style]="'width:100%'">
-          <mat-label>Описание задачи</mat-label>
-          <textarea
-            matInput
-            [formControl]="descriptionFormControl"
-            placeholder="Введите описание задачи (необязательно)"
-          ></textarea>
-        </mat-form-field>
-        <app-button-component
-          [type]="'submit'"
-          [title]="'Add'"
-          [isAdd]="true"
-          (click)="onAddTask(taskFormControl.value, descriptionFormControl.value)"
-          [isDisabled]="taskFormControl.invalid"
-          appShowTooltip="Добавить задачу"
-        ></app-button-component>
-      </form>
+      <app-to-do-list-create (addTaskEvent)="addTask($event)"></app-to-do-list-create>
     </section>
   </div>
   @if (selectedItemId) {

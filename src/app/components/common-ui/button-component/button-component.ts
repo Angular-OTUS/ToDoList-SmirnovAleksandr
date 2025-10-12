@@ -9,7 +9,6 @@ import { TypeButton } from '../../../types/common.types';
   styleUrl: './button-component.scss',
 })
 export class ButtonComponent {
-  @Input() title?: string = 'button';
   @Input() isDelete = false;
   @Input() isAdd = false;
   @Input() isEdit = false;

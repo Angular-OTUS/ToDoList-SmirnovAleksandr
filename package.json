@@ -10,7 +10,9 @@
     "prettier:fix": "prettier --write ",
     "prettier:fix:all": "prettier --write . ",
     "lint": "ng lint",
-    "prepare": "husky"
+    "prepare": "husky",
+    "server": "json-server --watch db.json --port 3001",
+    "server:dev": "json-server --watch db.json --port 3001 --delay 1000"
   },
   "prettier": {
     "printWidth": 100,
@@ -47,6 +49,7 @@
     "eslint": "^9.33.0",
     "husky": "^9.1.7",
     "jasmine-core": "~5.9.0",
+    "json-server": "^1.0.0-beta.3",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
     "karma-coverage": "~2.2.0",
