@@ -5,6 +5,7 @@ import { ShowTooltip } from '../../../directives/show-tooltip';
 import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { TaskStatus } from '../../../types/common.types';
 
 @Component({
   selector: 'app-to-do-list-item',
@@ -24,8 +25,8 @@ export class ToDoListItem implements OnInit {
   @Input() text?: string;
   @Input() status?: string;
   @Input() id!: number;
-  @Input() selectedItemId?: number | null;
-  @Input() isEdited = false;
+  @Input() isEdited?: boolean;
+  @Input() isSelected?: boolean;
   @Output() deleteTaskEvent = new EventEmitter();
   @Output() saveTextTaskEvent = new EventEmitter();
   @Output() changeTaskStatusEvent = new EventEmitter();
@@ -49,20 +50,9 @@ export class ToDoListItem implements OnInit {
     this.deleteTaskEvent.emit(id);
   }
 
-  isSelected() {
-    if (this.selectedItemId !== null) {
-      if (this.selectedItemId === this.id) {
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      return false;
-    }
-  }
-
   toggleStatus(): void {
-    this.status = this.status === 'Completed' ? 'InProgress' : 'Completed';
+    this.status =
+      this.status === TaskStatus.Completed ? TaskStatus.InProgress : TaskStatus.Completed;
     this.changeTaskStatusEvent.emit(this.status);
   }
 }

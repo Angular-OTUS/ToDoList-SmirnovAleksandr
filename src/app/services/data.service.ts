@@ -14,6 +14,11 @@ export class DataService {
     return this.http.get<Task[]>(this.apiUrl);
   }
 
+  getTaskById(id: number): Observable<Task> {
+    const url = `${this.apiUrl}/${id}`;
+    return this.http.get<Task>(url);
+  }
+
   addTask(task: Omit<Task, 'id'>): Observable<Task> {
     return this.http.post<Task>(this.apiUrl, task);
   }
